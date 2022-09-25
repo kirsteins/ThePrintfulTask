@@ -34,6 +34,9 @@ import Foundation
             if (response as? HTTPURLResponse)?.statusCode == 200 {
                 let categoriesTopLevel = try decoder.decode(CategoriesTopLevel.self, from: data)
                 let categories = categoriesTopLevel.result.categories
+
+                // Split categories into a hierarchical, so we do not overload
+                // user with too many categories
                 self.categories = makeTree(fromCategories: categories)
             } else {
                 let responseErrorPayload = try decoder.decode(ResponseError.self, from: data)
